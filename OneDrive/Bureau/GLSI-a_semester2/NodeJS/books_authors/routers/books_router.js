@@ -111,3 +111,21 @@ router.put('/:id', (req, res) => {
      books[result_validation] = book;
      res.json(book);
    });
+
+   //delete
+   router.delete('/:id', (req, res) => {
+    let book = books.find(b => {
+      return b.id === parseInt(req.params.id);
+    });
+    if (!book) {
+      res.status(404).json({
+        message: `book with ${req.params.id} not found`
+      });
+    }
+    books = books.filter(b => {
+      return b != book
+    });
+    res.statusMessage = "book deleted successfully"
+    res.status(200);
+    res.json(book);
+  });
