@@ -35,4 +35,15 @@ router.get('/', (req, res) => { // préfixe => index
     res.json(books)
   });
   
-
+router.get('/:id' , (req,res) => {
+  let book = books.find(b=>{ //apres => body de la function 
+    return b.id === parseInt(req.params.id)
+  })
+ 
+  if(!book){
+      return res.status(404).json({
+          message : `books with {req.params.id} not found`
+      })
+  }
+  return res.status(200).json(book)
+})
