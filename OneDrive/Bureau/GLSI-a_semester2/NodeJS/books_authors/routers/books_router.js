@@ -36,5 +36,3 @@ router.get('/', (req, res) => { // préfixe => index
   });
   
 
-
-module.exports = router ;
