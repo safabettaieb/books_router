@@ -11,10 +11,11 @@ const bookValidation = {
     imageUrl : joi.string().uri().required(),
     author : {
         firstName: joi.string().min(3).required(),
-        lastName:joi.string().min(3).required()
+        lastName:joi.string().min(3).required(),
+        nbBooks: joi.number().positive()
     },
-    nbBooks: joi.number().positive(),
-    source : joi.array()   
+   
+    sources : joi.array()   
 }
 
  /* data */
@@ -60,18 +61,18 @@ router.get('/:id' , (req,res) => {
   }
   return res.status(200).json(book)
 })
-
+// add
 router.post('/',(req,res)=>{
 
-    let book = [{
+    let book = {
         id : books.length + 1,
         name : req.body.name ,
         description : req.body.description,
         imageUrl : req.body.imageUrl ,
         author : req.body.author,  
-        souces : req.body.sources
+        sources : req.body.sources
        }
-    ]
+    
     const result_validation = joi.validate(book, bookValidation);
     if (result_validation.error)
      return res.status(400).json({message: result_validation.error.details[0].message});
@@ -82,3 +83,31 @@ router.post('/',(req,res)=>{
    res.status(201).json(book);
 
 })
+// update 
+router.put('/:id', (req, res) => {
+    let bookIndex = books.findIndex(b => {
+      return b.id === parseInt(req.params.id);
+    });
+    if (bookIndex === -1) {
+      return res.status(404).json({
+        message: `book with ${req.params.id} not found`
+      });
+    }
+    let book = {
+        id : parseInt(req.params.id), 
+        name : req.body.name ,
+        description : req.body.description,
+        imageUrl : req.body.imageUrl ,
+        author : req.body.author, 
+        sources : req.body.sources
+       }
+    
+    const result_validation = joi.validate(book, bookValidation);
+    if (result_validation.error)
+     return res.status(400).json({message: result_validation.error.details[0].message});
+
+     res.statusMessage = "book updated successfully";
+     res.status(200)
+     books[result_validation] = book;
+     res.json(book);
+   });
