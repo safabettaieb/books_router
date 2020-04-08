@@ -3,8 +3,10 @@
     <app-shopping-edit></app-shopping-edit>
     <hr>
     <div class="list-group">
-      <a href="#" class="list-group-item list-group-item-action">
-        Cras justo odio
+      <a *ngFor="let ingredient of ingredients" class="list-group-item list-group-item-action" style="cursor: pointer;">
+       {{ingredient.name}}
+       <span class="badge badge-pill badge-primary ml-3">{{ingredient.amount}}</span>
+
       </a>
 
     </div>
